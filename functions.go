@@ -59,6 +59,7 @@ func DataToString(data []float64) string {
 	return str
 }
 
+// среднее арифметическое
 func Average(numbers []float64) float64 {
 	var sum float64
 	for _, num := range numbers {
@@ -68,6 +69,17 @@ func Average(numbers []float64) float64 {
 	return sum / float64(len(numbers))
 }
 
+// среднее арифметическое от квадратов
+func Average2(numbers []float64) float64 {
+    var sum float64
+    for _, num := range numbers {
+        sum += math.Pow(num, 2)
+    }
+
+    return sum / float64(len(numbers))
+}
+
+// Среднее квадратическое отклонение
 func S(numbers []float64) float64 {
 	av := Average(numbers)
 	N := len(numbers)
@@ -81,6 +93,7 @@ func S(numbers []float64) float64 {
 	return s
 }
 
+// коефициент Эксцесса
 func E(numbers []float64) float64 {
 	av := Average(numbers)
 	N := len(numbers)
@@ -96,6 +109,7 @@ func E(numbers []float64) float64 {
 	return e
 }
 
+// контрэксцесс
 func contrE(numbers []float64) float64 {
 	E := E(numbers)
 	if E < 0 {
@@ -105,10 +119,12 @@ func contrE(numbers []float64) float64 {
 	return 1 / math.Sqrt(E)
 }
 
+// вариация Пирсона
 func W(numbers []float64) float64 {
 	return S(numbers) / Average(numbers)
 }
 
+// коефициент ассиметрии
 func A(numbers []float64) float64 {
 	var a float64
 	av := Average(numbers)
@@ -122,6 +138,23 @@ func A(numbers []float64) float64 {
 	return (math.Sqrt(N*(N-1)) / (N - 2)) * a
 }
 
+// lab4 a
+func a(numbers []float64) float64 {
+    av := Average(numbers)
+    av2 := Average2(numbers)
+
+    return av - math.Sqrt(3*(av2-math.Pow(av, 2)))
+}
+
+// lab4 b
+func b(numbers []float64) float64 {
+    av := Average(numbers)
+    av2 := Average2(numbers)
+
+    return av + math.Sqrt(3*(av2-math.Pow(av, 2)))
+}
+
+// медиана
 func Mediana(numbers []float64) float64 {
 	N := len(numbers)
 
@@ -132,6 +165,7 @@ func Mediana(numbers []float64) float64 {
 	}
 }
 
+// модуль от числа
 func Module(num float64) float64 {
 	if num < 0 {
 		return -1 * num

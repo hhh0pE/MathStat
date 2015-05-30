@@ -46,6 +46,7 @@ func render(w http.ResponseWriter, content string) {
                     <li><a href="/">Ввод данных</a></li>
                     <li><a href="/analys/#variations">Вариационный ряд</a></li>
                     <li><a href="/analys/#classes">Классы и гистограммы</a></li>
+                    <li><a href="/analys2/">Вероятностная сетка</a></li>
                 </ul>
                 `
 	template_after := `
