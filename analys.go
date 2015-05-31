@@ -14,11 +14,7 @@ func analysAction() string {
 
 	size := len(data)
 
-	frequency := make(map[float64]int, len(data))
-
-	for _, number := range data {
-		frequency[number]++
-	}
+	frequency := Frequency(data)
 
 	content := `<a name="variations"></a>`
 	content += "<h1>Вариационный ряд</h1>"
@@ -57,7 +53,7 @@ func analysAction() string {
         global_M = int(math.Floor(math.Sqrt(float64(size))))
     }
     M := global_M
-	h := (max - min) / float64(M)
+	h := h(data)
 
 	content += `</table>
     <div id="chart1"></div>
@@ -93,35 +89,9 @@ func analysAction() string {
                 }
             })
         </script>
-    `, DataToString(data))
+    `, FloatDataToString(data))
 
-	classes := make([]Class, M)
-
-	data_i := 0
-	for class_i, _ := range classes {
-		classes[class_i].Min = min + float64(class_i)*h
-		classes[class_i].Max = min + (float64(class_i)+1)*h
-
-		//        fmt.Printf("Min(%6.3f) Max(%6.3f)\n", classes[class_i].Min, classes[class_i].Max)
-
-		for ; data[data_i] <= classes[class_i].Max; data_i++ {
-			if data_i > 0 && data[data_i] == data[data_i-1] {
-				continue
-			}
-
-			classes[class_i].Frequency += frequency[data[data_i]]
-
-			if data_i == len(data)-1 {
-				break
-			}
-		}
-
-		if class_i > 0 {
-			classes[class_i].FuncNum = classes[class_i-1].FuncNum + classes[class_i].Frequency
-		} else {
-			classes[0].FuncNum = classes[0].Frequency
-		}
-	}
+	classes := Classes(data)
 
 	content += `
         <table class="table">
@@ -224,7 +194,7 @@ func analysAction() string {
                 }
             })
     </script>
-    `, classesValues(classes), classesIntervals(classes), size, DataToString(data), classesFullValues(classes), classesIntervals(classes), size)
+    `, classesValues(classes), classesIntervals(classes), size, FloatDataToString(data), classesFullValues(classes), classesIntervals(classes), size)
 
 	content += "<h1>Количественные характеристики выборки</h1>"
 
